@@ -44,13 +44,10 @@ Use the higher-order function called getYears to do the following:
 3. Return an array called years containing all of the years in the getFinals data set*/
 // 2 parameters array / getFinalscb
 function getYears(array, getFinalscb) {
-    const years = getFinalscb(array).map(function(item) {
-        return item.Year;
-    });
-    return years;
+    return getFinalscb(array).map(item => item.Year);
     // map over the results of getFinals to get all the years
 }
-console.log(getYears(fifaData, getFinals));
+console.log('task 3', getYears(fifaData, getFinals));
 
 
 /* 🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀 Task 4: 🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀
@@ -62,16 +59,18 @@ Use the higher-order function getWinners to do the following:
 
 // 2 parameters - array / getFinalscb
 function getWinners(array, getFinalscb) {
-    const winners = [];
-    getFinalscb(array).forEach(function(item) {
-        if(item['Home Team Goals'] > item['Away Team Goals']){
-            winners.push(item['Home Team Name']);
-        } else if (item['Home Team Goals'] < item['Away Team Goals']){
-            winners.push(item['Away Team Name']);
-        }
-    })
-    return winners;
+    return getFinalscb(array).map(item => item['Home Team Goals'] > item['Away Team Goals'] ? item['Home Team Name'] : item['Away Team Name']);
+    // const winners = [];
+    // getFinalscb(array).forEach(function(item) {
+    //     if(item['Home Team Goals'] > item['Away Team Goals']){
+    //         winners.push(item['Home Team Name']);
+    //     } else if (item['Home Team Goals'] < item['Away Team Goals']){
+    //         winners.push(item['Away Team Name']);
+    //     }
+    // })
+    // return winners;
 };
+console.log('task 4', getWinners(fifaData, getFinals));
 // console.log(getWinners(fifaData, getFinals));
     // use map
     // use a conditional if home team goals > away team goals then we want the home team name else we want the away team name
@@ -91,15 +90,24 @@ hint: the strings returned need to exactly match the string in step 4.
  */
 // 4 parameters - array, getFinalscb, getYearscb, getWinnerscb
 function getWinnersByYear(array, getFinalscb, getYearscb, getWinnerscb) {
-    const newArray = [];
-    getFinalscb(array).forEach(function(item, index){
-        let year = getYearscb(array, getFinalscb)[index];
-        let country = getWinnerscb(array, getFinalscb)[index];
-        newArray.push(`In ${year}, ${country} won the world cup!`);
+    const winners = getWinnerscb(array, getFinalscb);
+    const years = getYearscb(array, getFinalscb);
+
+    const string = winners.map(function(item, index) {
+        return `In ${years[index]}, ${item} won the world cup!`;
     });
-    return newArray;
+    return string;
+
+
+    // const newArray = [];
+    // getFinalscb(array).forEach(function(item, index){
+    //     let year = getYearscb(array, getFinalscb)[index];
+    //     let country = getWinnerscb(array, getFinalscb)[index];
+    //     newArray.push(`In ${year}, ${country} won the world cup!`);
+    // });
+    // return newArray;
 }
-console.log(getWinnersByYear(fifaData, getFinals, getYears, getWinners));
+console.log('task 5', getWinnersByYear(fifaData, getFinals, getYears, getWinners));
 
 
 
