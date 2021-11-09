@@ -92,10 +92,11 @@ hint: the strings returned need to exactly match the string in step 4.
 // 4 parameters - array, getFinalscb, getYearscb, getWinnerscb
 function getWinnersByYear(array, getFinalscb, getYearscb, getWinnerscb) {
     const newArray = [];
-    let year = getYearscb(array, getFinalscb);
-    let country = getWinnerscb(array, getFinalscb);
-    // use map - I would map over one array and grab each item then I would use the index to grab the item in the other array
-    newArray.push(`In ${year}, ${country} won the world cup!`);
+    getFinalscb(array).forEach(function(item, index){
+        let year = getYearscb(array, getFinalscb)[index];
+        let country = getWinnerscb(array, getFinalscb)[index];
+        newArray.push(`In ${year}, ${country} won the world cup!`);
+    });
     return newArray;
 }
 console.log(getWinnersByYear(fifaData, getFinals, getYears, getWinners));
@@ -112,17 +113,19 @@ Use the higher order function getAverageGoals to do the following:
  Example of invocation: getAverageGoals(getFinals(fifaData));
 */
 // getFinalscb, 
-function getAverageGoals(/* code here */) {
-   /* code here */
+function getAverageGoals(getFinalscb) {
+   const averageGoals = getFinalscb.reduce(function(acc, item) {
+    return acc + ((item['Home Team Goals'] + item['Away Team Goals']) / getFinalscb.length);
+   }, 0);
+
+   return averageGoals.toFixed(2);
 // use .reduce here to add up all the goals of the home and away team
 
 // divide that number by the length of the array
 // round to 2 decimal places ** hint - look up toFixed()
 }
 
-
-
-getAverageGoals(getFinals(fifaData));
+console.log(getAverageGoals(getFinals(fifaData)));
 
 
 
